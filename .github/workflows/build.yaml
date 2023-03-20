@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Download Postman
         run: wget -c https://dl.pstmn.io/download/latest/linux64 -O postman.tar.gz
@@ -28,7 +28,7 @@ jobs:
         id: postman-version
         run: |
           tar zxf postman*.tar.gz
-          echo "::set-output name=VERSION::$(cat ./Postman/app/resources/app/package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g' | tr -d '[[:space:]]')"
+          echo "VERSION=$(cat ./Postman/app/resources/app/package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g' | tr -d '[[:space:]]')" >> $GITHUB_OUTPUT
           
       - name: Postman Version
         run: echo "Postman Version is ${{ steps.postman-version.outputs.VERSION }}"
@@ -54,7 +54,7 @@ jobs:
           ./appimagetool-*.AppImage --appimage-extract
           VERSION=${{ steps.postman-version.outputs.VERSION }} ARCH=x86_64 ./squashfs-root/AppRun Postman
           
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: Postman-${{ steps.postman-version.outputs.VERSION }}
           path: Postman-*.AppImage
