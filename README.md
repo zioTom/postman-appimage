@@ -1,3 +1,3 @@
 # Postman AppImage
 
-Postman in single executable binnary
+Postman in a single executable binary.
